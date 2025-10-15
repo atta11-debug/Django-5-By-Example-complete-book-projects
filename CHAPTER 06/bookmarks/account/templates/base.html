@@ -24,7 +24,7 @@
                 <a href="{% url 'dashboard' %}">My Dashboard</a>
             </li>
             <li {% if section == "images" %} class="selected" {% endif %}>
-                <a href="#">Images</a>
+                <a href="{% url 'images:list' %}">Images</a>
             </li>
             <li {% if section == "people" %} class="selected" {% endif %}>
                 <a href="#">People</a>
@@ -49,12 +49,34 @@
 
     </div>
 
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="{{message.tags}}">
+            {{message|safe}}
+            <a href="#" class="close">x</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
     <div id="content">
         {% block content %}
 
         {% endblock content %}
     </div>
 
+    <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script>
+        const csrftoken = Cookies.get('csrftoken');
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // DOM loaded
+            {% block domready %}
+            {% endblock %}
+        });
+    </script>
 </body>
 
 </html>
