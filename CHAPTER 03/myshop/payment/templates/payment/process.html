@@ -1,24 +1,24 @@
 {% extends 'shop/base.html' %}
-{% load static %}
+{% load i18n static %}
 
 
 {% block title %}
-Pay your order
+{% trans 'Pay your order' %}
 {% endblock title %}
 
 
 {% block content %}
 <h1>
-    Order Summary
+    {% trans 'Order Summary' %}
 </h1>
 <table class="cart">
     <thead>
         <tr>
-            <th>Image</th>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
+            <th>{% trans 'Image' %}</th>
+            <th>{% trans 'Product' %}</th>
+            <th>{% trans 'Price' %}</th>
+            <th>{% trans 'Quantity' %}</th>
+            <th>{% trans 'Total' %}</th>
         </tr>
     </thead>
 
@@ -38,7 +38,7 @@ Pay your order
         {% endfor %}
         {% if order.coupon %}
         <tr class="subtotal">
-            <td>Subtotal</td>
+            <td>{% trans 'Subtotal' %}</td>
             <td colspan="3"></td>
             <td class="num">
                 ${{ order.get_total_cost_before_discount|floatformat:2 }}
@@ -46,8 +46,9 @@ Pay your order
         </tr>
         <tr>
             <td>
-                "{{ order.coupon.code }}" coupon
-                ({{ order.discount }}% off)
+                {% blocktranslate with code=order.coupon.code discount=order.discount %}
+                "{{ code }}" ({{ discount }}% off)
+                {% endblocktranslate %}
             </td>
             <td colspan="3"></td>
             <td class="num neg">
@@ -56,13 +57,13 @@ Pay your order
         </tr>
         {% endif %}
         <tr class="total">
-            <td colspan="4">Toatl</td>
+            <td colspan="4">{% trans 'Toatl' %}</td>
             <td class="num">${{order.get_total_cost|floatformat:2}}</td>
         </tr>
     </tbody>
 </table>
 <form action="{% url 'payment:process' %}" method="POST">
     {% csrf_token %}
-    <input type="submit" value="Pay Now">
+    <input type="submit" value="{% trans 'Pay Now' %}">
 </form>
 {% endblock content %}

@@ -1,30 +1,18 @@
 from django.contrib import admin
-from parler.admin import TranslatableAdmin
-from .models import Category, Product
+from shop import models
 
-@admin.register(Category)
-class CategoryAdmin(TranslatableAdmin):
+# Register your models here.
+
+
+@admin.register(models.Category)
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ["name", "slug"]
-    def get_prepopulated_fields(self, request, obj=None):
-        return {"slug": ("name",)}
+    prepopulated_fields = {"slug": ("name",)}
 
-    fieldsets = (
-        (None, {
-            'fields': ('name', 'slug')
-        }),
-    )
 
-@admin.register(Product)
-class ProductAdmin(TranslatableAdmin):
+@admin.register(models.Product)
+class ProductAdmin(admin.ModelAdmin):
     list_display = ["name", "slug", "price", "available", "created", "updated"]
     list_filter = ["available", "created", "updated"]
     list_editable = ["price", "available"]
-
-    def get_prepopulated_fields(self, request, obj=None):
-        return {"slug": ("name",)}
-
-    fieldsets = (
-        (None, {
-            'fields': ('name', 'slug', 'description', 'category', 'price', 'available', 'image')
-        }),
-    )
+    prepopulated_fields = {"slug": ("name",)}
